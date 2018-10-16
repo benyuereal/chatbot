@@ -1,0 +1,37 @@
+__label__greet howdy
+__label__greet hey there
+__label__greet hello
+__label__greet hi
+__label__restaurant_search i'm looking for a place in the north of town
+__label__restaurant_search show me chinese restaurants
+__label__restaurant_search show me chines restaurants
+__label__affirm yep
+__label__affirm yeah
+__label__goodbye goodbye
+__label__goodbye good bye
+__label__goodbye stop
+__label__goodbye end
+__label__restaurant_search search for restaurants
+__label__restaurant_search anywhere in the west
+__label__restaurant_search central indian restaurant
+__label__affirm that's right
+__label__affirm ok
+__label__affirm great
+__label__greet howdy
+__label__greet hey there
+__label__greet hello
+__label__greet hi
+__label__restaurant_search i'm looking for a place in the north of town
+__label__restaurant_search show me chinese restaurants
+__label__affirm yep
+__label__affirm yeah
+__label__goodbye goodbye
+__label__goodbye good bye
+__label__goodbye stop
+__label__goodbye end
+__label__restaurant_search search for restaurants
+__label__restaurant_search anywhere in the west
+__label__restaurant_search central indian restaurant
+__label__affirm that's right
+__label__affirm ok
+__label__affirm great

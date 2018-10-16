@@ -1,0 +1,14 @@
+__label__greet hey
+__label__restaurant_search i'm looking for a place to eat
+__label__affirm yes
+__label__restaurant_search show me a mexican place in the centre
+__label__goodbye bye
+__label__restaurant_search i am looking for an indian spot
+__label__affirm indeed
+__label__greet hey
+__label__restaurant_search i'm looking for a place to eat
+__label__affirm yes
+__label__restaurant_search show me a mexican place in the centre
+__label__goodbye bye
+__label__restaurant_search i am looking for an indian spot
+__label__affirm indeed
