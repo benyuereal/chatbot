@@ -96,6 +96,8 @@ def rnn_cell(rnn_input, state):
         W = tf.get_variable('W', [num_classes + state_size, state_size])
         b = tf.get_variable('b', [state_size], initializer=tf.constant_initializer(0.0))
     #     tf.matmul是矩阵乘法
+
+    # fixme 这个整个就完成了
     return tf.tanh(tf.matmul(tf.concat([rnn_input, state], 1), W) + b)
 
 
@@ -143,18 +145,26 @@ def rnn():
     with tf.variable_scope('softmax'):
         W = tf.get_variable('W', [state_size, num_classes])
         b = tf.get_variable('b', [num_classes], initializer=tf.constant_initializer(0.0))
+    #这是 fixme 预测值
     logits = [tf.matmul(rnn_output, W) + b for rnn_output in rnn_outputs]
     predictions = [tf.nn.softmax(logit) for logit in logits]
 
     # 计算损失函数
     # 计算损失函数
     y_as_list = tf.unstack(y, num=num_steps, axis=1)
+    # 这是 fixme 损失
+    # sparse_softmax_cross_entropy_with_logits中 lables接受直接的数字标签
+    # 如[1], [2], [3], [4] （类型只能为int32，int64）
     losses = [tf.nn.sparse_softmax_cross_entropy_with_logits(labels=label, logits=logit) for
+              # list(zip(a,b))
+              # [(1, 4), (2, 5), (3, 6)]
               logit, label in zip(logits, y_as_list)]
+    # 求均值
     total_loss = tf.reduce_mean(losses)
 
     # 定义优化器
     learning_rate = 0.1
+    # 优化的就是 fixme total_loss 也就是损失最小
     train_step = tf.train.AdagradOptimizer(learning_rate).minimize(total_loss)
     # 上面有一个tf.Variable的例子
     # 在tf.variable_scope('rnn_cell')和tf.variable_scope('softmax')中，各自有两个用W和b表示的tf.Variable. 因为在不同的variable_scope，即便使用同样的名字，表示的是不同的对象
@@ -179,6 +189,7 @@ def rnn():
     训练模型的参数
     """
 
+    # 可以理解为 fixme 神经元个数
     num_epochs = 4
     verbose = True
     # 画重点：
@@ -204,9 +215,22 @@ def rnn():
             training_state = np.zeros((batch_size, state_size))
             if verbose:
                 print("\nEPOCH", idx)
+            # 再来介绍一下各个符号的含义：x是输入，h是隐层单元，o为输出，L为损失函数，y为训练集的标签。这些元素右上角带的t代表t时刻的状态，其中需要注意的是，因策单元h在t时刻的表现不仅由此刻的输入决定，还受t时刻之前时刻的影响。V、W、U是权值，同一类型的权连接权值相同。
+            #
+            # 有了上面的理解，前向传播算法其实非常简单，对于t时刻：
+            # h(t)=ϕ(Ux(t)+Wh(t−1)+b) fixme Ux(t)=rnn_cell() training_state
+            # 其中ϕ()为激活函数，一般来说会选择tanh函数，b为偏置。
+            # t时刻的输出就更为简单：
+            # o(t)=Vh(t)+c fixme softmax层
+            # 最终模型的预测输出为：
+            # y^(t)=σ(o(t))
+            #
+            #对于每个神经元来说 fixme 有一个输入X，有一个输出y，有个状态序列H也就是training_state，预测输入out_put= v*X
             for step, (X, Y) in enumerate(epoch):
+                # rnn 对training_state的更改，所以每次训练都会放进去
                 tr_losses, training_loss_, training_state, _ = sess.run(
                     [losses, total_loss, final_state, train_step],
+                    # feed_dict 是占位符 占个坑 然后再赋值
                     feed_dict={x: X, y: Y, init_state: training_state})
                 training_loss += training_loss_
                 if step % 500 == 0 and step > 0:
