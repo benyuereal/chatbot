@@ -1,0 +1,20 @@
+{
+  "best_model": "demo_model/best_model/model-1266",
+  "best_valid_ppl": 177.85926818847656,
+  "encoding": "utf-8",
+  "latest_model": "demo_model/save_model/model-1266",
+  "params": {
+    "batch_size": 20,
+    "cell_type": "lstm",
+    "dropout": 0.0,
+    "embedding_size": 128,
+    "hidden_size": 256,
+    "input_dropout": 0.0,
+    "learning_rate": 0.005,
+    "max_grad_norm": 5.0,
+    "num_layers": 2,
+    "num_unrollings": 20,
+    "vocab_size": 3433
+  },
+  "vocab_file": "demo_model/vocab.json"
+}

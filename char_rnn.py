@@ -106,17 +106,17 @@ class CharRNNLM(object):
         cell_fn = tf.nn.rnn_cell.BasicRNNCell
 
         params = dict()
+        # 单元 这里复习一下 单元有状态 输入、输出
         cell = cell_fn(self.hidden_size, **params)
 
         with tf.name_scope('initial_state'):
+            # 初始化细胞状态
             self.zero_state = cell.zero_state(self.batch_size, tf.float32)
-
-            self.initial_state = tf.placeholder(tf.float32,
-                                                [self.batch_size, cell.state_size],
-                                                'initial_state')
+            # 将初始状态标记好
+            self.initial_state = tf.placeholder(tf.float32, [self.batch_size, cell.state_size], 'initial_state')
 
         with tf.name_scope('embedding_layer'):
-            ## 定义词向量参数，并通过查询将输入的整数序列每一个元素转换为embedding向量
+            ## 定义词向量参数， fixme 并通过查询将输入的整数序列每一个元素转换为embedding向量
             # 如果提供了embedding的维度，我们声明一个embedding参数，即词向量参数矩阵
             # 否则，我们使用Identity矩阵作为词向量参数矩阵
             if embedding_size > 0:
@@ -223,10 +223,14 @@ class CharRNNLM(object):
 
 def run():
     batch_size = 16
+    # 要生成的训练数据段的数目
     num_unrollings = 20
     vocab_size = 2
+    # 隐藏层大小
     hidden_size = 16
+    # 输入向量大小
     embedding_size = 16
+    # 学习率
     learning_rate = 0.01
 
     model = CharRNNLM(batch_size, num_unrollings,
@@ -241,7 +245,7 @@ def run():
     # batch_generator = BatchGenerator(dataset[0], batch_size, seq_length)
     session = tf.Session()
     with session.as_default():
-        for epoch in range(1):
+        for epoch in range(5):
             session.run(tf.global_variables_initializer())
             ppl, global_step = model.run_epoch(session, batch_generator, learning_rate, freq=10)
             print(ppl)
